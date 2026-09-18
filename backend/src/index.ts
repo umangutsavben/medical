@@ -1,0 +1,103 @@
+import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import path from 'path';
+import { config } from './config/env';
+import { AppError } from './utils/errors';
+
+// Import routes
+import authRoutes from './routes/auth';
+import profileRoutes from './routes/profile';
+import documentRoutes from './routes/documents';
+import searchRoutes from './routes/search';
+import categoryRoutes from './routes/categories';
+import healthParamRoutes from './routes/healthParams';
+import healthTrendRoutes from './routes/healthTrends';
+
+const app = express();
+
+// =============================================
+// MIDDLEWARE
+// =============================================
+
+// CORS
+app.use(cors({
+  origin: config.frontendUrl,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Body parsing
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Serve uploaded files (with auth in production, open for dev)
+app.use('/uploads', express.static(path.resolve(config.uploadDir)));
+
+// =============================================
+// ROUTES
+// =============================================
+
+app.get('/api/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/health-parameters', healthParamRoutes);
+app.use('/api/health-trends', healthTrendRoutes);
+
+// =============================================
+// ERROR HANDLING
+// =============================================
+
+// 404 handler
+app.use((_req: Request, res: Response) => {
+  res.status(404).json({ error: 'Route not found' });
+});
+
+// Global error handler
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error('Error:', err.message);
+
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      error: err.message,
+    });
+  }
+
+  // Multer errors
+  if (err.message && err.message.includes('Invalid file type')) {
+    return res.status(400).json({ error: err.message });
+  }
+
+  if ((err as any).code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({
+      error: `File too large. Maximum size: ${config.maxFileSizeMB}MB`,
+    });
+  }
+
+  // Generic error - don't expose details in production
+  res.status(500).json({
+    error: config.nodeEnv === 'development' ? err.message : 'Internal server error',
+  });
+});
+
+// =============================================
+// START SERVER
+// =============================================
+
+app.listen(config.port, () => {
+  console.log(`
+╔══════════════════════════════════════════════════╗
+║  MedRecord Backend Server                        ║
+║  Running on: http://localhost:${config.port}              ║
+║  Environment: ${config.nodeEnv.padEnd(32)}║
+╚══════════════════════════════════════════════════╝
+  `);
+});
+
+export default app;

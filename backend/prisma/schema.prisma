@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================
+// USER & AUTHENTICATION
+// =============================================
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  dateOfBirth  String?
+  gender       String?
+  profilePhoto String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  documents          MedicalDocument[]
+  healthMeasurements HealthMeasurement[]
+
+  @@index([email])
+}
+
+// =============================================
+// MEDICAL DOCUMENTS
+// =============================================
+
+model MedicalDocument {
+  id               String   @id @default(uuid())
+  userId           String
+  fileName         String
+  originalName     String
+  fileType         String
+  fileSize         Int
+  storagePath      String
+  uploadedAt       DateTime @default(now())
+  processingStatus String   @default("UPLOADED") // UPLOADED, PROCESSING, COMPLETED, FAILED
+  categoryId       String?
+  processingError  String?
+
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category          MedicalCategory?   @relation(fields: [categoryId], references: [id])
+  extractedText     ExtractedText?
+  healthMeasurements HealthMeasurement[]
+  tags              DocumentTag[]
+
+  @@index([userId])
+  @@index([processingStatus])
+  @@index([categoryId])
+  @@index([uploadedAt])
+}
+
+model ExtractedText {
+  id         String   @id @default(uuid())
+  documentId String   @unique
+  text       String
+  pageCount  Int?
+  confidence Float?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  document MedicalDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
+
+// =============================================
+// MEDICAL CATEGORIES & TAGS
+// =============================================
+
+model MedicalCategory {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String?
+  icon        String?
+
+  documents MedicalDocument[]
+}
+
+model DocumentTag {
+  id         String @id @default(uuid())
+  documentId String
+  tag        String
+
+  document MedicalDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, tag])
+  @@index([tag])
+}
+
+// =============================================
+// HEALTH PARAMETERS & MEASUREMENTS
+// =============================================
+
+model HealthParameter {
+  id           String @id @default(uuid())
+  name         String @unique  // e.g., "glucose", "hemoglobin", "systolic_bp", "diastolic_bp", "cholesterol", "heart_rate"
+  displayName  String          // e.g., "Blood Glucose", "Hemoglobin"
+  defaultUnit  String          // e.g., "mg/dL", "g/dL", "mmHg"
+  description  String?
+  normalMin    Float?
+  normalMax    Float?
+
+  measurements HealthMeasurement[]
+}
+
+model HealthMeasurement {
+  id            String   @id @default(uuid())
+  userId        String
+  parameterId   String
+  documentId    String?
+  value         Float
+  unit          String
+  measuredAt    DateTime
+  confidence    Float?
+  isManualEntry Boolean  @default(false)
+  originalText  String?  // Original OCR text for traceability
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parameter HealthParameter  @relation(fields: [parameterId], references: [id])
+  document  MedicalDocument? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([parameterId])
+  @@index([measuredAt])
+  @@index([userId, parameterId])
+}
