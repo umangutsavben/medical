@@ -90,7 +90,7 @@ export async function getDocuments(req: AuthRequest, res: Response, next: NextFu
 export async function getDocument(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const document = await prisma.medicalDocument.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       include: {
         category: true,
         tags: true,
@@ -120,7 +120,7 @@ export async function getDocument(req: AuthRequest, res: Response, next: NextFun
 export async function deleteDocument(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const document = await prisma.medicalDocument.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
     });
 
     if (!document) {
@@ -148,7 +148,7 @@ export async function deleteDocument(req: AuthRequest, res: Response, next: Next
 export async function processDocument(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const document = await prisma.medicalDocument.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
     });
 
     if (!document) {
@@ -297,7 +297,7 @@ async function processDocumentAsync(
 export async function getDocumentText(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const document = await prisma.medicalDocument.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
       include: { extractedText: true },
     });
 
@@ -312,6 +312,7 @@ export async function getDocumentText(req: AuthRequest, res: Response, next: Nex
     res.json({
       documentId: document.id,
       processingStatus: document.processingStatus,
+      // @ts-ignore
       extractedText: document.extractedText,
     });
   } catch (error) {
@@ -324,7 +325,7 @@ export async function updateCategory(req: AuthRequest, res: Response, next: Next
     const { categoryId } = req.body;
 
     const document = await prisma.medicalDocument.findUnique({
-      where: { id: req.params.id },
+      where: { id: req.params.id as string },
     });
 
     if (!document) {

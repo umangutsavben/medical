@@ -81,7 +81,7 @@ export async function getParameterMeasurements(req: AuthRequest, res: Response, 
     const paramType = req.params.type;
 
     const parameter = await prisma.healthParameter.findUnique({
-      where: { name: paramType },
+      where: { name: paramType as string },
     });
 
     if (!parameter) {
@@ -120,7 +120,7 @@ export async function correctMeasurement(req: AuthRequest, res: Response, next: 
     const measurementId = req.params.id;
 
     const measurement = await prisma.healthMeasurement.findUnique({
-      where: { id: measurementId },
+      where: { id: measurementId as string },
     });
 
     if (!measurement) {
@@ -132,7 +132,7 @@ export async function correctMeasurement(req: AuthRequest, res: Response, next: 
     }
 
     const updated = await prisma.healthMeasurement.update({
-      where: { id: measurementId },
+      where: { id: measurementId as string },
       data: {
         value: data.value,
         unit: data.unit || measurement.unit,
@@ -157,7 +157,7 @@ export async function getHealthTrends(req: AuthRequest, res: Response, next: Nex
     const paramType = req.params.parameter;
 
     const parameter = await prisma.healthParameter.findUnique({
-      where: { name: paramType },
+      where: { name: paramType as string },
     });
 
     if (!parameter) {
