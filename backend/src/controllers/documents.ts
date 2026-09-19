@@ -16,15 +16,16 @@ export async function uploadDocument(req: AuthRequest, res: Response, next: Next
     }
 
     const file = req.file;
+    const uniqueName = await storageService.uploadBuffer(file.buffer, file.originalname, file.mimetype);
 
     const document = await prisma.medicalDocument.create({
       data: {
         userId: req.userId!,
-        fileName: file.filename,
+        fileName: uniqueName,
         originalName: file.originalname,
         fileType: file.mimetype,
         fileSize: file.size,
-        storagePath: storageService.getFileUrl(file.filename),
+        storagePath: storageService.getFileUrl(uniqueName),
         processingStatus: 'UPLOADED',
       },
     });

@@ -20,21 +20,21 @@ export class OCRService {
    * Supports: JPG, JPEG, PNG, and PDF (first page).
    */
   async processFile(fileName: string): Promise<OCRResult> {
-    const filePath = storageService.getFilePath(fileName);
+    const buffer = await storageService.getFileBuffer(fileName);
     const ext = path.extname(fileName).toLowerCase();
 
     if (['.jpg', '.jpeg', '.png'].includes(ext)) {
-      return this.processImage(filePath);
+      return this.processImage(buffer);
     } else if (ext === '.pdf') {
-      return this.processPdf(filePath);
+      return this.processPdf(buffer);
     } else {
       throw new Error(`Unsupported file type: ${ext}`);
     }
   }
 
-  private async processImage(filePath: string): Promise<OCRResult> {
+  private async processImage(buffer: Buffer): Promise<OCRResult> {
     try {
-      const result = await Tesseract.recognize(filePath, 'eng', {
+      const result = await Tesseract.recognize(buffer, 'eng', {
         logger: (m) => {
           if (m.status === 'recognizing text') {
             // Progress tracking could be implemented here
@@ -53,11 +53,9 @@ export class OCRService {
     }
   }
 
-  private async processPdf(filePath: string): Promise<OCRResult> {
-    // Tesseract.js can handle PDF files directly in recent versions
-    // It converts PDF pages to images internally
+  private async processPdf(buffer: Buffer): Promise<OCRResult> {
     try {
-      const result = await Tesseract.recognize(filePath, 'eng', {
+      const result = await Tesseract.recognize(buffer, 'eng', {
         logger: (m) => {
           if (m.status === 'recognizing text') {
             // Progress
@@ -71,7 +69,6 @@ export class OCRService {
         pageCount: 1,
       };
     } catch (error) {
-      // If direct PDF processing fails, provide informative error
       console.error('PDF OCR error:', error);
       throw new Error(
         'PDF OCR processing failed. For best results, upload image files (JPG/PNG) of medical reports. ' +

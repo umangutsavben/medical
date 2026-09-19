@@ -1,0 +1,55 @@
+name: medrecord
+description: "Smart Medical Record Manager - Flutter Mobile App"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # HTTP client with interceptors (replaces Axios)
+  dio: ^5.7.0
+
+  # State management (replaces React Context)
+  provider: ^6.1.2
+
+  # Declarative routing with auth guards (replaces react-router-dom)
+  go_router: ^14.8.1
+
+  # Health trend charts (replaces Recharts)
+  fl_chart: ^0.70.2
+
+  # File & image picking
+  image_picker: ^1.1.2
+  file_picker: ^8.1.7
+
+  # Secure token storage (replaces localStorage)
+  flutter_secure_storage: ^9.2.4
+
+  # Icon library (matches lucide-react)
+  lucide_icons: ^0.257.0
+
+  # Date formatting
+  intl: ^0.19.0
+
+  # Google Fonts (Inter)
+  google_fonts: ^6.2.1
+
+  # Image caching
+  cached_network_image: ^3.4.1
+
+  # MIME type detection for uploads
+  mime: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

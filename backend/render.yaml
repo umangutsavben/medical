@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: medrecord-backend
+    env: node
+    buildCommand: npm install && npm run prisma:generate && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        sync: false
