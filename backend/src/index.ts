@@ -80,9 +80,10 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
     });
   }
 
-  // Generic error - don't expose details in production
+  // Temporary debug
   res.status(500).json({
-    error: config.nodeEnv === 'development' ? err.message : 'Internal server error',
+    error: err.message,
+    stack: err.stack
   });
 });
 
