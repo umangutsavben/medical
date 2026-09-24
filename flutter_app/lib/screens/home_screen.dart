@@ -101,12 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Disclaimer
-                const AlertBanner(
-                  message:
-                      '⚠️ This app helps organize medical records. It does not provide medical diagnoses or replace medical professionals.',
-                  type: AlertType.warning,
-                ),
 
                 // Stats grid
                 Row(
