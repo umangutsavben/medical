@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from 'firebase-admin/app';
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getStorage } from 'firebase-admin/storage';
 
 // Initialize Firebase Admin SDK
@@ -7,8 +7,16 @@ import { getStorage } from 'firebase-admin/storage';
 // it will automatically pick up the default credentials.
 if (!getApps().length) {
   try {
-    initializeApp();
-    console.log('Firebase Admin initialized successfully');
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+      initializeApp({
+        credential: cert(serviceAccount)
+      });
+      console.log('Firebase Admin initialized successfully using JSON string');
+    } else {
+      initializeApp();
+      console.log('Firebase Admin initialized successfully using default credentials');
+    }
   } catch (error) {
     console.error('Firebase Admin initialization error:', error);
   }
