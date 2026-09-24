@@ -14,8 +14,7 @@ if (!getApps().length) {
       });
       console.log('Firebase Admin initialized successfully using JSON string');
     } else {
-      initializeApp();
-      console.log('Firebase Admin initialized successfully using default credentials');
+      console.log('No Firebase credentials found. Skipping Firebase initialization.');
     }
   } catch (error) {
     console.error('Firebase Admin initialization error:', error);
