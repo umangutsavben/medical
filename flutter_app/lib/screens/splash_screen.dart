@@ -49,30 +49,27 @@ class _SplashScreenState extends State<SplashScreen>
           children: [
             ScaleTransition(
               scale: _scaleAnimation,
-              child: Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Center(
-                  child: Text('🏥', style: TextStyle(fontSize: 36)),
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              'MedRecord',
+              'MyHealthMitra',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 26,
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              'Smart Medical Record Manager',
+              'All your Reports, Simple, Smart, Sorted',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.white.withValues(alpha: 0.8),

@@ -87,17 +87,37 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Greeting
-                Text(
-                  'Hello, ${user?.name.split(' ').first ?? 'User'} 👋',
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Manage your medical records securely',
-                  style:
-                      TextStyle(fontSize: 14, color: AppTheme.textSecondary),
+                // Greeting with Logo
+                Row(
+                  children: [
+                    ClipOval(
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        width: 48,
+                        height: 48,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hello, ${user?.name.split(' ').first ?? 'User'} 👋',
+                            style: const TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.w700),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            'All your Reports, Simple, Smart, Sorted',
+                            style: TextStyle(
+                                fontSize: 13, color: AppTheme.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
 

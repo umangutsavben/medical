@@ -65,18 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 // Logo
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    gradient: const LinearGradient(
-                      colors: [AppTheme.primary, AppTheme.secondary],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                ClipOval(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
                   ),
-                  child: const Icon(Icons.favorite, color: Colors.white, size: 32),
                 ),
                 const SizedBox(height: 16),
                 const Text(
