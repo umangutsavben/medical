@@ -1,5 +1,5 @@
 class MedicalCategory {
-  final int id;
+  final String id;
   final String name;
   final String icon;
   final String? description;
@@ -13,7 +13,7 @@ class MedicalCategory {
 
   factory MedicalCategory.fromJson(Map<String, dynamic> json) {
     return MedicalCategory(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       icon: json['icon'] as String? ?? '📋',
       description: json['description'] as String?,

@@ -43,26 +43,26 @@ class DocumentService {
     return response.data as Map<String, dynamic>;
   }
 
-  Future<MedicalDocument> get(int id) async {
+  Future<MedicalDocument> get(String id) async {
     final response = await _dio.get('/documents/$id');
     return MedicalDocument.fromJson(
         response.data['document'] as Map<String, dynamic>);
   }
 
-  Future<void> delete(int id) async {
+  Future<void> delete(String id) async {
     await _dio.delete('/documents/$id');
   }
 
-  Future<void> process(int id) async {
+  Future<void> process(String id) async {
     await _dio.post('/documents/$id/process');
   }
 
-  Future<String> getText(int id) async {
+  Future<String> getText(String id) async {
     final response = await _dio.get('/documents/$id/text');
     return response.data['text'] as String? ?? '';
   }
 
-  Future<void> updateCategory(int docId, int categoryId) async {
+  Future<void> updateCategory(String docId, String categoryId) async {
     await _dio.patch('/documents/$docId/category', data: {
       'categoryId': categoryId,
     });

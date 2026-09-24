@@ -79,7 +79,7 @@ GoRouter createRouter(AuthProvider authProvider) {
       GoRoute(
         path: '/documents/:id',
         builder: (context, state) {
-          final id = int.tryParse(state.pathParameters['id']!) ?? 0;
+          final id = state.pathParameters['id']!;
           return DocumentDetailScreen(documentId: id);
         },
       ),

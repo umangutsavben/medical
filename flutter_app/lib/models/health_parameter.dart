@@ -51,7 +51,7 @@ class LatestMeasurement {
 }
 
 class HealthMeasurement {
-  final int id;
+  final String id;
   final double value;
   final String unit;
   final String? measuredAt;
@@ -71,7 +71,7 @@ class HealthMeasurement {
 
   factory HealthMeasurement.fromJson(Map<String, dynamic> json) {
     return HealthMeasurement(
-      id: json['id'] as int,
+      id: json['id'] as String,
       value: (json['value'] as num).toDouble(),
       unit: json['unit'] as String? ?? '',
       measuredAt: json['measuredAt'] as String?,

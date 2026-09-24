@@ -11,7 +11,7 @@ import '../widgets/param_card.dart';
 import '../widgets/loading_indicator.dart';
 
 class DocumentDetailScreen extends StatefulWidget {
-  final int documentId;
+  final String documentId;
   const DocumentDetailScreen({super.key, required this.documentId});
 
   @override

@@ -14,7 +14,7 @@ class HealthService {
   }
 
   Future<void> correctMeasurement(
-    int measurementId, {
+    String measurementId, {
     required double value,
     String? measuredAt,
   }) async {

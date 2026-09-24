@@ -1,10 +1,8 @@
 class ApiConfig {
-  // Change this to your machine's local IP when testing on a physical device.
-  // For Android emulator, use 10.0.2.2 instead of localhost.
-  // For iOS simulator, localhost works fine.
-  static const String baseUrl = 'http://localhost:3001/api';
+  // Production URL on Render
+  static const String baseUrl = 'https://medical-0n1w.onrender.com/api';
 
-  // For physical device testing, uncomment and set your machine's IP:
+  // For physical device testing locally, uncomment and set your machine's IP:
   // static const String baseUrl = 'http://192.168.1.XXX:3001/api';
 
   static const Duration connectTimeout = Duration(seconds: 15);

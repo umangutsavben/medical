@@ -1,21 +1,21 @@
 import 'category.dart';
 
 class DocumentTag {
-  final int id;
+  final String id;
   final String tag;
 
   DocumentTag({required this.id, required this.tag});
 
   factory DocumentTag.fromJson(Map<String, dynamic> json) {
     return DocumentTag(
-      id: json['id'] as int,
+      id: json['id'] as String,
       tag: json['tag'] as String,
     );
   }
 }
 
 class ExtractedText {
-  final int id;
+  final String id;
   final String? text;
   final double? confidence;
   final String? snippet;
@@ -24,7 +24,7 @@ class ExtractedText {
 
   factory ExtractedText.fromJson(Map<String, dynamic> json) {
     return ExtractedText(
-      id: json['id'] as int,
+      id: json['id'] as String,
       text: json['text'] as String?,
       confidence: (json['confidence'] as num?)?.toDouble(),
       snippet: json['snippet'] as String?,
@@ -33,7 +33,7 @@ class ExtractedText {
 }
 
 class MedicalDocument {
-  final int id;
+  final String id;
   final String originalName;
   final String fileType;
   final int fileSize;
@@ -63,7 +63,7 @@ class MedicalDocument {
 
   factory MedicalDocument.fromJson(Map<String, dynamic> json) {
     return MedicalDocument(
-      id: json['id'] as int,
+      id: json['id'] as String,
       originalName: json['originalName'] as String,
       fileType: json['fileType'] as String,
       fileSize: (json['fileSize'] as num).toInt(),
@@ -114,7 +114,7 @@ class MedicalDocument {
 }
 
 class HealthMeasurementRef {
-  final int id;
+  final String id;
   final double value;
   final String unit;
   final String? originalText;
@@ -138,7 +138,7 @@ class HealthMeasurementRef {
 
   factory HealthMeasurementRef.fromJson(Map<String, dynamic> json) {
     return HealthMeasurementRef(
-      id: json['id'] as int,
+      id: json['id'] as String,
       value: (json['value'] as num).toDouble(),
       unit: json['unit'] as String? ?? '',
       originalText: json['originalText'] as String?,

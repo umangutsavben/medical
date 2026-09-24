@@ -89,7 +89,7 @@ class _UploadScreenState extends State<UploadScreen> {
 
       // Auto-trigger OCR
       try {
-        await _docService.process(doc['id'] as int);
+        await _docService.process(doc['id'] as String);
       } catch (_) {}
     } catch (e) {
       setState(() => _error = 'Upload failed. Please try again.');
